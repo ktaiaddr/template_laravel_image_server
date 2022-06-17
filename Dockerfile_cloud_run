@@ -13,6 +13,7 @@ RUN mkdir -p /var/www/html/docker_config/web/logs/
 RUN apachectl configtest
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
+RUN cp /var/www/html/laravel9/.env.example /var/www/html/laravel9/.env
 WORKDIR /var/www/html/laravel9/
 RUN composer install
 
