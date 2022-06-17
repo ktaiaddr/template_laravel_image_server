@@ -55,7 +55,29 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => env('SFTP_HOST'),
 
+            // 基本認証の設定
+            'username' => env('SFTP_USERNAME'),
+            'password' => env('SFTP_PASSWORD'),
+
+            // 暗号化パスワードを使用するSSHキーベースの認証の設定
+            //'privateKey' => env('SFTP_PRIVATE_KEY'),
+            //'password' => env('SFTP_PASSWORD'),
+
+            // オプションのSFTP設定
+            // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
+            // 'maxTries' => 4,
+            // 'passphrase' => env('SFTP_PASSPHRASE'),
+            'port' => env('SFTP_PORT', 22),
+            'root' => env('SFTP_ROOT', ''),
+            // 'timeout' => 30,
+            // 'useAgent' => true,
+            'visibility' => 'public',
+            'permPublic' => 0755,
+        ],
     ],
 
     /*
