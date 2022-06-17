@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  laravel:
+    build:
+      context: ./
+      dockerfile: ./docker_config/web/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Tokyo
+    working_dir: /var/www/html/
+    tty: true
+
