@@ -16,6 +16,6 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN cp /var/www/html/laravel9/.env.example /var/www/html/laravel9/.env
 WORKDIR /var/www/html/laravel9/
 RUN composer install
-ENTRYPOINT /bin/bash -c
-CMD chmod -R 777 /var/www/html/laravel9 && apache2 -D FOREGROUND
+RUN chmod -R 777 /var/www/html/laravel9
+
 
