@@ -33,15 +33,17 @@ Route::post('/image', function (Request $request) {
     // カンマ以降の文字列
     $fileData =  base64_decode($base64_ex[1]);
 
+    // ファイル名にUUIDを発行
     $filename = Str::orderedUuid()->toString();
 
-    // 保存先パスを取得
+    // base64の画像データを一時ファイルに保存
     $tmpFilePath = sys_get_temp_dir() . '/' . $filename.'.png';
-
     file_put_contents($tmpFilePath, $fileData);
 
+    // sftpで画像保存サーバーにファイルを保存
     Storage::disk('sftp')->putFileAs( 'public', $tmpFilePath,$filename.'.png');
 
+    // アクセス用URLをレスポンスで返却
     return response()->json([asset('api/image/'.$filename)]);
 
 });
