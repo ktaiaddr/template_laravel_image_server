@@ -30,28 +30,32 @@ Route::post('/image', function (Request $request) {
     // カンマで分割
     $base64_ex = explode(',',$base64);
 
+    $extension = explode('/',explode(';',$base64_ex[0])[0])[1];
+
     // カンマ以降の文字列
     $fileData =  base64_decode($base64_ex[1]);
 
     // ファイル名にUUIDを発行
-    $filename = Str::orderedUuid()->toString();
+    $filename_body = Str::orderedUuid()->toString();
 
     // base64の画像データを一時ファイルに保存
-    $tmpFilePath = sys_get_temp_dir() . '/' . $filename.'.png';
+    $tmpFilePath = sys_get_temp_dir() . '/' . $filename_body.'.'.$extension;
     file_put_contents($tmpFilePath, $fileData);
 
     // sftpで画像保存サーバーにファイルを保存
-    Storage::disk('sftp')->putFileAs( 'public', $tmpFilePath,$filename.'.png');
+    Storage::disk('sftp')->putFileAs( 'public', $tmpFilePath,$filename_body.'.'.$extension);
 
     // アクセス用URLをレスポンスで返却
-    return response()->json([asset('api/image/'.$filename)]);
+    return response()->json([asset('api/image/'.$filename_body.'.'.$extension)]);
 
 });
 
 Route::get('/image/{filename}', function (Request $request, string $filename) {
 
-    $filedata = Storage::disk('sftp')->get('public/'.$filename.'.png');
+    $filedata = Storage::disk('sftp')->get('public/'.$filename);
 
-    return response(($filedata))->header('content-Type', 'image/png');
+    $extension = explode('.', $filename)[1];
+
+    return response(($filedata))->header('content-Type', 'image/'. $extension);
 });
 
